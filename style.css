@@ -4,7 +4,7 @@ body {
 }
 
 .container {
-    width:60%;
+    width: 60%;
     padding: 30px;
     margin: 0 auto;
     background: #fafafa;
@@ -42,4 +42,25 @@ body {
 .card.title {
     font-weight: 600;
     font-size: 17px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 20px;
+}
+
+.addButton {
+    padding: 10px;
+    border: none;
+    background-color: indigo;
+    border-radius: 5px;
+    font-size: 14px;
+    color: white;
+    cursor: pointer;
+}
+
+.addButton:hover {
+    opacity: 0.7;
 }
