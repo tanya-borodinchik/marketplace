@@ -12,68 +12,27 @@
     <div class="container">
 
         <div class="button-container">
-            <button class="addButton">Добавить</button>
+            <button class="cardAddButton">Добавить</button>
         </div>
 
-        <div class="cards-container">
+        <dialog class="modal" id="myWindowOne" role="dialog">
+            <header class="modal-header">
+                <h1>Добавить товар</h1>
+            </header>
+            <main class="modal-main">
 
-            <div class="card-box">
-                <div class="card title">Название товара</div>
-                <div class="card description">Описание товара</div>
-                <div class="card price">Цена товара</div>
-                <div class="card category">Категория товара</div>
-            </div>
+                <input type="text" id="title" placeholder="Название товара">
+                <input type="text" id="description" placeholder="Описание товара">
+                <input type="text" id="price" placeholder="Цена товара">
+                <input type="text" id="category" placeholder="Категория товара">
 
-            <div class="card-box">
-                <div class="card title">Название товара</div>
-                <div class="card description">Описание товара</div>
-                <div class="card price">Цена товара</div>
-                <div class="card category">Категория товара</div>
-            </div>
+                <footer class="modal-footer">
+                    <button id="addButton">Добавить</button>
+                    <button id="closeButton">Отменить</button>
+                </footer>
+        </dialog>
 
-            <div class="card-box">
-                <div class="card title">Название товара</div>
-                <div class="card description">Описание товара</div>
-                <div class="card price">Цена товара</div>
-                <div class="card category">Категория товара</div>
-            </div>
-
-            <div class="card-box">
-                <div class="card title">Название товара</div>
-                <div class="card description">Описание товара</div>
-                <div class="card price">Цена товара</div>
-                <div class="card category">Категория товара</div>
-            </div>
-
-            <div class="card-box">
-                <div class="card title">Название товара</div>
-                <div class="card description">Описание товара</div>
-                <div class="card price">Цена товара</div>
-                <div class="card category">Категория товара</div>
-            </div>
-
-            <div class="card-box">
-                <div class="card title">Название товара</div>
-                <div class="card description">Описание товара</div>
-                <div class="card price">Цена товара</div>
-                <div class="card category">Категория товара</div>
-            </div>
-
-            <div class="card-box">
-                <div class="card title">Название товара</div>
-                <div class="card description">Описание товара</div>
-                <div class="card price">Цена товара</div>
-                <div class="card category">Категория товара</div>
-            </div>
-
-            <div class="card-box">
-                <div class="card title">Название товара</div>
-                <div class="card description">Описание товара</div>
-                <div class="card price">Цена товара</div>
-                <div class="card category">Категория товара</div>
-            </div>
-
-        </div>
+        <div class="cards-container"></div>
     </div>
 
     <script src="js/script.js"></script>

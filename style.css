@@ -51,7 +51,7 @@ body {
     padding: 20px;
 }
 
-.addButton {
+.cardAddButton {
     padding: 10px;
     border: none;
     background-color: indigo;
@@ -61,6 +61,6 @@ body {
     cursor: pointer;
 }
 
-.addButton:hover {
+.cardAddButton:hover {
     opacity: 0.7;
 }
