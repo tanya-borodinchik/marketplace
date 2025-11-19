@@ -4,26 +4,29 @@ const dialog = document.getElementById('myWindowOne');
 const closeButton = document.getElementById('closeButton');
 const addButton = document.getElementById('addButton');
 
-function createCard(title, description, price, category) {
+let cardText = [];
+const uuid = () => crypto.randomUUID();
+
+function createCard(text) {
 
     const card = document.createElement('div');
     card.classList.add('card-box');
 
     const cardTitle = document.createElement('div');
     cardTitle.classList.add('card', 'title');
-    cardTitle.textContent = title;
+    cardTitle.textContent = text.title;
 
     const cardDescription = document.createElement('div');
     cardDescription.classList.add('card');
-    cardDescription.textContent = description;
+    cardDescription.textContent = text.description;
 
     const cardPrice = document.createElement('div');
     cardPrice.classList.add('card');
-    cardPrice.textContent = "Цена: " + price;
+    cardPrice.textContent = "Цена: " + text.price;
 
     const cardCategory = document.createElement('div');
     cardCategory.classList.add('card');
-    cardCategory.textContent = "Категория: " + category;
+    cardCategory.textContent = "Категория: " + text.category;
 
     card.appendChild(cardTitle);
     card.appendChild(cardDescription);
@@ -31,6 +34,7 @@ function createCard(title, description, price, category) {
     card.appendChild(cardCategory);
 
     cardsContainer.appendChild(card);
+    card.setAttribute('id', text.id)
 
     return cardsContainer
 }
@@ -49,7 +53,17 @@ function saveCard() {
     let price = document.getElementById('price').value;
     let category = document.getElementById('category').value;
 
-    createCard(title, description, price, category);
+    const text = {
+        id: uuid(),
+        title,
+        description,
+        price,
+        category
+    };
+
+    cardText.push(text);
+
+    createCard(text);
 
     dialog.close();
     clearDialog();
