@@ -7,6 +7,9 @@ const addButton = document.getElementById('addButton');
 let cardText = [];
 const uuid = () => crypto.randomUUID();
 
+updateCards();
+renderCards();
+
 function createCard(text) {
 
     const card = document.createElement('div');
@@ -63,10 +66,10 @@ function saveCard() {
 
     cardText.push(text);
 
-    createCard(text);
-
+    renderCards()
     dialog.close();
     clearDialog();
+    saveCardsToLocalStorage();
 }
 
 addButton.addEventListener('click', saveCard);
@@ -76,4 +79,32 @@ function clearDialog() {
     document.getElementById('description').value = '';
     document.getElementById('price').value = '';
     document.getElementById('category').value = '';
+}
+
+function saveCardsToLocalStorage() {
+    localStorage.setItem('cards', JSON.stringify(cardText));
+}
+
+function updateCards() {
+    const saved = localStorage.getItem('cards');
+    if (saved) {
+        try {
+            cardText = JSON.parse(saved);
+        } catch { }
+    }
+}
+
+function renderCards() {
+    removeAllCards();
+
+    cardText.forEach(element => {
+        createCard(element);
+    });
+
+}
+
+function removeAllCards() {
+    Array.from(cardsContainer.childNodes).forEach(element => {
+        cardsContainer.removeChild(element);
+    });
 }
