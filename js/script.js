@@ -1,11 +1,28 @@
 const cardAddButton = document.querySelector('.cardAddButton');
 const cardsContainer = document.querySelector('.cards-container');
-const dialog = document.getElementById('myWindowOne');
+const dialog = document.getElementById('addCardDialog');
 const closeButton = document.getElementById('closeButton');
 const addButton = document.getElementById('addButton');
+const select = document.getElementById('category');
+const dialogInputs = document.querySelectorAll('input, select');
 
 let cardText = [];
 const uuid = () => crypto.randomUUID();
+
+const categories = {
+    "Элeтроника": "Электроника",
+    "Одежда": "Одежда",
+    "Бытовая техника": "Бытовая техника",
+    "Дом и интерьер": "Дом и интерьер",
+    "Спорт и отдых": "Спорт и отдых"
+};
+
+Object.entries(categories).forEach(([key, value]) => {
+    const option = document.createElement('option');
+    option.value = value;
+    option.textContent = key;
+    select.appendChild(option);
+});
 
 updateCards();
 renderCards();
@@ -44,6 +61,7 @@ function createCard(text) {
 
 cardAddButton.addEventListener('click', () => {
     dialog.showModal();
+    addButton.disabled = true;
 });
 
 closeButton.addEventListener('click', () => {
@@ -107,4 +125,13 @@ function removeAllCards() {
     Array.from(cardsContainer.childNodes).forEach(element => {
         cardsContainer.removeChild(element);
     });
+}
+
+dialogInputs.forEach(element => {
+    element.addEventListener('input', checkInputs)
+    element.addEventListener('change', checkInputs)
+})
+
+function checkInputs() {
+   addButton.disabled = Boolean(Array.from(dialogInputs).find(element => !element.value));
 }

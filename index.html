@@ -15,7 +15,7 @@
             <button class="cardAddButton">Добавить</button>
         </div>
 
-        <dialog class="modal" id="myWindowOne" role="dialog">
+        <dialog class="modal" id="addCardDialog" role="dialog">
             <header class="modal-header">
                 <h1>Добавить товар</h1>
             </header>
@@ -23,8 +23,10 @@
 
                 <input type="text" id="title" placeholder="Название товара">
                 <input type="text" id="description" placeholder="Описание товара">
-                <input type="text" id="price" placeholder="Цена товара">
-                <input type="text" id="category" placeholder="Категория товара">
+                <input type="number" id="price" placeholder="Цена товара" min="0">
+                <select id="category">
+                    <option value="">Выберите категорию</option>
+                </select>
 
                 <footer class="modal-footer">
                     <button id="addButton">Добавить</button>

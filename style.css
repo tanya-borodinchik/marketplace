@@ -69,7 +69,7 @@ dialog {
     padding: 25px;
     border: none;
     border-radius: 12px;
-    box-shadow: 0 0 25px rgba(0,0,0,0.3);
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
 }
 
 dialog::backdrop {
@@ -92,6 +92,7 @@ dialog input {
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
+    flex-direction: column;
 }
 
 .modal-footer {
@@ -110,6 +111,11 @@ dialog input {
     cursor: pointer;
 }
 
+#addButton:disabled {
+    background: #a583be;
+    cursor: default;
+}
+
 #closeButton {
     background: #aaa;
     color: #fff;
@@ -117,4 +123,10 @@ dialog input {
     padding: 10px 20px;
     border-radius: 6px;
     cursor: pointer;
+}
+
+#category {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
 }
