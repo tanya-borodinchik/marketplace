@@ -3,50 +3,73 @@ const cardsContainer = document.querySelector('.cards-container');
 const dialog = document.getElementById('addCardDialog');
 const closeButton = document.getElementById('closeButton');
 const addButton = document.getElementById('addButton');
-const select = document.getElementById('category');
 const dialogInputs = document.querySelectorAll('input, select');
+const options = document.getElementById('options');
+const selectedOption = document.getElementById('selected');
 
-let cardText = [];
+let cardData = [];
 const uuid = () => crypto.randomUUID();
 
-const categories = {
-    "Элeтроника": "Электроника",
-    "Одежда": "Одежда",
-    "Бытовая техника": "Бытовая техника",
-    "Дом и интерьер": "Дом и интерьер",
-    "Спорт и отдых": "Спорт и отдых"
+const LOCALES = {
+    noSelectedCategory: "Выберите категорию",
+    electronics: "Электроника",
+    clothes: "Одежда",
+    appliances: "Бытовая техника",
+    interior: "Дом и интерьер",
+    sport: "Спорт и отдых"
 };
 
-Object.entries(categories).forEach(([key, value]) => {
-    const option = document.createElement('option');
-    option.value = value;
-    option.textContent = key;
-    select.appendChild(option);
+selectedOption.textContent = LOCALES.noSelectedCategory;
+selectedOption.dataset.value = "";
+
+const categoryOptions = ["electronics", "clothes", "appliances", "interior", "sport"]
+
+categoryOptions.forEach(key => {
+    const option = document.createElement('li');
+    option.value = key;
+    option.textContent = LOCALES[key];
+
+    options.appendChild(option);
+
+    option.addEventListener('click', () => {
+        selectedOption.textContent = LOCALES[key];
+        selectedOption.dataset.value = key;
+
+        selectedOption.classList.add('active');
+
+        options.classList.remove('open');
+
+        checkInputs();
+    });
+});
+
+selectedOption.addEventListener('click', () => {
+    options.classList.toggle('open');
 });
 
 updateCards();
-renderCards();
+renderCards(cardData);
 
-function createCard(text) {
+function createCard(data) {
 
     const card = document.createElement('div');
     card.classList.add('card-box');
 
     const cardTitle = document.createElement('div');
     cardTitle.classList.add('card', 'title');
-    cardTitle.textContent = text.title;
+    cardTitle.textContent = data.title;
 
     const cardDescription = document.createElement('div');
     cardDescription.classList.add('card');
-    cardDescription.textContent = text.description;
+    cardDescription.textContent = data.description;
 
     const cardPrice = document.createElement('div');
     cardPrice.classList.add('card');
-    cardPrice.textContent = "Цена: " + text.price;
+    cardPrice.textContent = "Цена: " + data.price;
 
     const cardCategory = document.createElement('div');
     cardCategory.classList.add('card');
-    cardCategory.textContent = "Категория: " + text.category;
+    cardCategory.textContent = "Категория: " + LOCALES[data.category];
 
     card.appendChild(cardTitle);
     card.appendChild(cardDescription);
@@ -54,7 +77,7 @@ function createCard(text) {
     card.appendChild(cardCategory);
 
     cardsContainer.appendChild(card);
-    card.setAttribute('id', text.id)
+    card.setAttribute('id', data.id)
 
     return cardsContainer
 }
@@ -66,15 +89,16 @@ cardAddButton.addEventListener('click', () => {
 
 closeButton.addEventListener('click', () => {
     dialog.close();
+    clearDialog();
 });
 
 function saveCard() {
     let title = document.getElementById('title').value;
     let description = document.getElementById('description').value;
-    let price = document.getElementById('price').value;
-    let category = document.getElementById('category').value;
+    let price = priceInput.value;
+    let category = selectedOption.dataset.value;
 
-    const text = {
+    const data = {
         id: uuid(),
         title,
         description,
@@ -82,9 +106,9 @@ function saveCard() {
         category
     };
 
-    cardText.push(text);
+    cardData.push(data);
 
-    renderCards()
+    renderCards(cardData)
     dialog.close();
     clearDialog();
     saveCardsToLocalStorage();
@@ -95,27 +119,31 @@ addButton.addEventListener('click', saveCard);
 function clearDialog() {
     document.getElementById('title').value = '';
     document.getElementById('description').value = '';
-    document.getElementById('price').value = '';
+    priceInput.value = '';
     document.getElementById('category').value = '';
+
+    selectedOption.textContent = LOCALES.noSelectedCategory;
+    selectedOption.dataset.value = "";
+    selectedOption.classList.remove('active');
 }
 
 function saveCardsToLocalStorage() {
-    localStorage.setItem('cards', JSON.stringify(cardText));
+    localStorage.setItem('cards', JSON.stringify(cardData));
 }
 
 function updateCards() {
     const saved = localStorage.getItem('cards');
     if (saved) {
         try {
-            cardText = JSON.parse(saved);
+            cardData = JSON.parse(saved);
         } catch { }
     }
 }
 
-function renderCards() {
+function renderCards(renderData) {
     removeAllCards();
 
-    cardText.forEach(element => {
+    renderData.forEach(element => {
         createCard(element);
     });
 
@@ -130,8 +158,27 @@ function removeAllCards() {
 dialogInputs.forEach(element => {
     element.addEventListener('input', checkInputs)
     element.addEventListener('change', checkInputs)
-})
+});
+
+const priceInput = document.getElementById('price');
+
+priceInput.addEventListener('input', () => {
+    let current = priceInput.value;
+
+    if (current === "") return
+
+    if (current < 1) {
+        priceInput.value = 1;
+    }
+});
 
 function checkInputs() {
-   addButton.disabled = Boolean(Array.from(dialogInputs).find(element => !element.value));
+    const emptyInput = Array.from(dialogInputs).find(element => !element.value);
+    const emptySelect = !selectedOption.dataset.value;
+    addButton.disabled = Boolean(emptyInput || emptySelect);
 }
+
+document.getElementById('sortPrice').addEventListener('click', () => {
+    const sortedData = cardData.toSorted((a, b) => a.price - b.price);
+    renderCards(sortedData);
+});

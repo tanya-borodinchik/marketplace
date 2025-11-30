@@ -130,3 +130,42 @@ dialog input {
     border-radius: 6px;
     border: 1px solid #ccc;
 }
+
+#selected {
+    cursor: pointer;
+    font-size: 13.5px;
+    color: #807a7a;
+}
+
+#selected.active {
+    color: #000000;
+}
+
+.options {
+    list-style: none;
+    padding: 0;
+    margin: auto;
+    color: #000000;
+    display: none;
+    font-size: 14px;
+}
+
+.options.open {
+    display: block;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.options li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.options li:hover {
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+}
+
+#category li.active {
+    color: black;
+    font-weight: 600;
+}

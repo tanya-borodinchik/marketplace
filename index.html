@@ -12,6 +12,7 @@
     <div class="container">
 
         <div class="button-container">
+            <button id="sortPrice">Сортировать по цене</button>
             <button class="cardAddButton">Добавить</button>
         </div>
 
@@ -23,10 +24,12 @@
 
                 <input type="text" id="title" placeholder="Название товара">
                 <input type="text" id="description" placeholder="Описание товара">
-                <input type="number" id="price" placeholder="Цена товара" min="0">
-                <select id="category">
-                    <option value="">Выберите категорию</option>
-                </select>
+                <input type="number" id="price" placeholder="Цена товара" min="1">
+
+                <div id="category" class="custom-select">
+                    <div id="selected"></div>
+                    <ul id="options" class="options"></ul>
+                </div>
 
                 <footer class="modal-footer">
                     <button id="addButton">Добавить</button>
