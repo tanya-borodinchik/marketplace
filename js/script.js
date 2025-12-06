@@ -11,6 +11,7 @@ let cardData = [];
 const uuid = () => crypto.randomUUID();
 
 const LOCALES = {
+    all: "Все категории",
     noSelectedCategory: "Выберите категорию",
     electronics: "Электроника",
     clothes: "Одежда",
@@ -70,6 +71,12 @@ function createCard(data) {
     const cardCategory = document.createElement('div');
     cardCategory.classList.add('card');
     cardCategory.textContent = "Категория: " + LOCALES[data.category];
+
+    const deleteButton = document.createElement('button');
+    deleteButton.classList.add('del-button');
+    deleteButton.textContent = "Удалить";
+    card.appendChild(deleteButton);
+    deleteButton.addEventListener('click', () => deleteCard(card.id));
 
     card.appendChild(cardTitle);
     card.appendChild(cardDescription);
@@ -182,3 +189,39 @@ document.getElementById('sortPrice').addEventListener('click', () => {
     const sortedData = cardData.toSorted((a, b) => a.price - b.price);
     renderCards(sortedData);
 });
+
+const filterSelected = document.getElementById('filterSelected');
+const filterOptions = document.getElementById('filterOptions');
+
+const filterCategory = ["all", ...categoryOptions];
+
+filterCategory.forEach(key => {
+    const filterOption = document.createElement('li');
+    filterOption.value = key;
+    filterOption.textContent = LOCALES[key];
+
+    filterOptions.appendChild(filterOption);
+
+    filterOption.addEventListener('click', () => {
+        filterSelected.textContent = LOCALES[key];
+        filterSelected.dataset.value = key;
+
+        if (key === "all") {
+            renderCards(cardData);
+        } else {
+            const filterData = cardData.filter(el => el.category === key);
+            renderCards(filterData);
+        }
+    });
+});
+
+document.getElementById('filterSelect').addEventListener('click', () => {
+    filterOptions.classList.toggle('open');
+});
+
+function deleteCard(id) {
+    cardData = cardData.filter(el => el.id !== id);
+
+    saveCardsToLocalStorage();
+    renderCards(cardData);
+}

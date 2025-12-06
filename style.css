@@ -169,3 +169,13 @@ dialog input {
     color: black;
     font-weight: 600;
 }
+
+#filterSelect {
+    padding: 10px;
+    border: none;
+    background-color: #554462de;
+    border-radius: 5px;
+    font-size: 14px;
+    color: white;
+    cursor: pointer;
+}
