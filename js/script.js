@@ -6,12 +6,17 @@ const addButton = document.getElementById('addButton');
 const dialogInputs = document.querySelectorAll('input, select');
 const options = document.getElementById('options');
 const selectedOption = document.getElementById('selected');
+const priceInput = document.getElementById('price');
+const filterSelected = document.getElementById('filterSelected');
+const filterOptions = document.getElementById('filterOptions');
+const searchInput = document.getElementById('searchInput');
 
 let cardData = [];
 const uuid = () => crypto.randomUUID();
 
 const LOCALES = {
     all: "Все категории",
+    delButton: "Удалить",
     noSelectedCategory: "Выберите категорию",
     electronics: "Электроника",
     clothes: "Одежда",
@@ -74,14 +79,14 @@ function createCard(data) {
 
     const deleteButton = document.createElement('button');
     deleteButton.classList.add('del-button');
-    deleteButton.textContent = "Удалить";
-    card.appendChild(deleteButton);
+    deleteButton.textContent = LOCALES["delButton"];
     deleteButton.addEventListener('click', () => deleteCard(card.id));
 
     card.appendChild(cardTitle);
     card.appendChild(cardDescription);
     card.appendChild(cardPrice);
     card.appendChild(cardCategory);
+    card.appendChild(deleteButton);
 
     cardsContainer.appendChild(card);
     card.setAttribute('id', data.id)
@@ -167,8 +172,6 @@ dialogInputs.forEach(element => {
     element.addEventListener('change', checkInputs)
 });
 
-const priceInput = document.getElementById('price');
-
 priceInput.addEventListener('input', () => {
     let current = priceInput.value;
 
@@ -189,9 +192,6 @@ document.getElementById('sortPrice').addEventListener('click', () => {
     const sortedData = cardData.toSorted((a, b) => a.price - b.price);
     renderCards(sortedData);
 });
-
-const filterSelected = document.getElementById('filterSelected');
-const filterOptions = document.getElementById('filterOptions');
 
 const filterCategory = ["all", ...categoryOptions];
 
@@ -224,4 +224,18 @@ function deleteCard(id) {
 
     saveCardsToLocalStorage();
     renderCards(cardData);
+}
+
+searchInput.addEventListener('input', searchFunction)
+
+function searchFunction() {
+    const searchText = searchInput.value;
+
+    if (searchText === "") {
+        searchData = cardData;
+    } else {
+        searchData = cardData.filter(el => el.title.includes(searchText) || el.description.includes(searchText));
+    }
+
+    renderCards(searchData);
 }

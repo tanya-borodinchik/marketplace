@@ -49,6 +49,8 @@ body {
     justify-content: flex-end;
     align-items: center;
     padding: 20px;
+    gap: 10px;
+    flex-wrap: wrap-reverse;
 }
 
 .cardAddButton {
@@ -145,7 +147,6 @@ dialog input {
     list-style: none;
     padding: 0;
     margin: auto;
-    color: #000000;
     display: none;
     font-size: 14px;
 }
@@ -173,9 +174,47 @@ dialog input {
 #filterSelect {
     padding: 10px;
     border: none;
-    background-color: #554462de;
+    background-color: #9841dade;
     border-radius: 5px;
     font-size: 14px;
     color: white;
     cursor: pointer;
+}
+
+.del-button {
+    padding: 10px;
+    border: none;
+    background-color: #a91e1e;
+    border-radius: 5px;
+    font-size: 14px;
+    color: white;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+.del-button:hover {
+    opacity: 0.7;
+}
+
+#sortPrice {
+    padding: 10px;
+    border: none;
+    background-color: #7427b0de;
+    border-radius: 5px;
+    font-size: 14px;
+    color: white;
+    cursor: pointer;
+}
+
+#search {
+    margin-right: auto;
+}
+
+#searchInput {
+    max-width: 300px;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
 }
