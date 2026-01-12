@@ -3,7 +3,7 @@ const cardsContainer = document.querySelector('.cards-container');
 const dialog = document.getElementById('addCardDialog');
 const closeButton = document.getElementById('closeButton');
 const addButton = document.getElementById('addButton');
-const dialogInputs = document.querySelectorAll('input, select');
+const dialogInputs = dialog.querySelectorAll('input, select');
 const options = document.getElementById('options');
 const selectedOption = document.getElementById('selected');
 const priceInput = document.getElementById('price');
@@ -189,8 +189,9 @@ function checkInputs() {
 }
 
 document.getElementById('sortPrice').addEventListener('click', () => {
-    const sortedData = cardData.toSorted((a, b) => a.price - b.price);
-    renderCards(sortedData);
+    filters.sortPrice = !filters.sortPrice;
+
+    addFilter();
 });
 
 const filterCategory = ["all", ...categoryOptions];
@@ -204,14 +205,9 @@ filterCategory.forEach(key => {
 
     filterOption.addEventListener('click', () => {
         filterSelected.textContent = LOCALES[key];
-        filterSelected.dataset.value = key;
+        filters.category = key;
 
-        if (key === "all") {
-            renderCards(cardData);
-        } else {
-            const filterData = cardData.filter(el => el.category === key);
-            renderCards(filterData);
-        }
+        addFilter();
     });
 });
 
@@ -226,16 +222,107 @@ function deleteCard(id) {
     renderCards(cardData);
 }
 
-searchInput.addEventListener('input', searchFunction)
+searchInput.addEventListener('input', searchFunction);
 
 function searchFunction() {
-    const searchText = searchInput.value;
+    filters.search = searchInput.value;
 
-    if (searchText === "") {
-        searchData = cardData;
-    } else {
-        searchData = cardData.filter(el => el.title.includes(searchText) || el.description.includes(searchText));
+    addFilter();
+}
+
+const filters = {
+    category: filterCategory[0],
+    search: "",
+    sortPrice: false
+}
+
+function addFilter() {
+    let filterData = cardData;
+
+    if (filters.category !== "all") {
+        filterData = filterData.filter(el => el.category === filters.category);
     }
 
-    renderCards(searchData);
+    filters.search = searchInput.value;
+    if (filters.search !== "") {
+        filterData = filterData.filter(el => el.title.includes(filters.search) || el.description.includes(filters.search));
+    }
+
+    filterData = filterData.toSorted((a, b) => {
+        if (filters.sortPrice) {
+            return a.price - b.price;
+        }
+        return b.price - a.price;
+    });
+
+    renderCards(filterData);
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    updateCards();
+    renderCards(cardData);
+
+    searchInput.addEventListener('input', searchFunction);
+
+    document.getElementById('filterSelect').addEventListener('click', () => {
+        filterOptions.classList.toggle('open');
+    });
+
+    addButton.addEventListener('click', saveCard);
+
+    cardAddButton.addEventListener('click', () => {
+        dialog.showModal();
+        addButton.disabled = true;
+    });
+
+    closeButton.addEventListener('click', () => {
+        dialog.close();
+        clearDialog();
+    });
+
+    addCategory();
+
+    selectedOption.addEventListener('click', () => {
+        options.classList.toggle('open');
+    });
+
+    addFilterCategory();
+});
+
+function addCategory() {
+    categoryOptions.forEach(key => {
+        const option = document.createElement('li');
+        option.value = key;
+        option.textContent = LOCALES[key];
+
+        options.appendChild(option);
+
+        option.addEventListener('click', () => {
+            selectedOption.textContent = LOCALES[key];
+            selectedOption.dataset.value = key;
+
+            selectedOption.classList.add('active');
+
+            options.classList.remove('open');
+
+            checkInputs();
+        });
+    });
+};
+
+function addFilterCategory() {
+    filterCategory.forEach(key => {
+        const filterOption = document.createElement('li');
+        filterOption.value = key;
+        filterOption.textContent = LOCALES[key];
+
+        filterOptions.appendChild(filterOption);
+
+        filterOption.addEventListener('click', () => {
+            filterSelected.textContent = LOCALES[key];
+            filters.category = key;
+
+            addFilter();
+        });
+    });
+};
